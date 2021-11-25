@@ -155,5 +155,8 @@ cython_debug/
 # JetBrains
 .idea
 
+# Env
+*.env
+
 # Static files
 static
