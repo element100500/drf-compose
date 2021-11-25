@@ -3,7 +3,7 @@
 ## 🔥 Features
 
 - Split settings (dev/prod)
-- User model for extend
+- User model ready for extend
 - API auth (Bearer token)
 - API documentation (OpenAPI Schema, Swagger, ReDoc)
 - Minimal Nginx config
