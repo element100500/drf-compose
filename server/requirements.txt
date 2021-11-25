@@ -1,0 +1,9 @@
+Pillow
+psycopg2
+gunicorn
+Django
+django-debug-toolbar
+djangorestframework
+django-cors-headers
+djoser
+drf_spectacular
