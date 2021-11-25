@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_spectacular',
     # Custom apps
-    'users',
+    'accounts',
+    'location',
 ]
 
 MIDDLEWARE = [
@@ -85,7 +86,7 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME', 'postgres'),
         'USER': os.environ.get('DB_USER', 'postgres'),
         'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
-        'HOST': os.environ.get('DB_HOST', 'db'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
@@ -93,7 +94,7 @@ DATABASES = {
 # Authentication
 # https://docs.djangoproject.com/en/3.2/topics/auth/customizing/
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'accounts.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -158,7 +159,7 @@ REST_FRAMEWORK = {
 
 DJOSER = {
     'SERIALIZERS': {
-        'current_user': 'users.serializers.UserSerializer',
+        'current_user': 'accounts.serializers.UserSerializer',
     },
 }
 
