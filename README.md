@@ -35,7 +35,7 @@ Check http://localhost:8000/admin/
 
 Edit `.env` file to use composer production config:
 
-    COMPOSE_FILE=docker-compose.dev.yml
+    COMPOSE_FILE=docker-compose.yml
 
 Set server environment variables in `server/.env` file:
 
