@@ -23,6 +23,35 @@ services:
       - ./server:/app
     depends_on:
       - db
+
+  celery:
+    build: ./server/
+    command: celery -A core worker --loglevel=WARNING --concurrency=10
+    env_file:
+      - ./server/.env
+    volumes:
+      - ./server:/app
+    depends_on:
+      - db
+      - redis
+    profiles:
+      - celery
+
+  celery_beat:
+    build: ./server/
+    command: celery -A core beat --loglevel=WARNING --scheduler=django_celery_beat.schedulers:DatabaseScheduler
+    env_file:
+      - ./server/.env
+    volumes:
+      - ./server:/app
+    depends_on:
+      - db
+      - redis
+    profiles:
+      - celery
+
+  redis:
+    image: redis:alpine
   
   nginx:
     image: nginx:alpine

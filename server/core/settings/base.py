@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'hackme')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DEBUG', True))
+DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 # Application definition
 
@@ -40,9 +40,13 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'drf_spectacular',
+    'django_filters',
+    'django_celery_results',
+    'django_celery_beat',
     # Custom apps
     'accounts',
     'location',
+    'ddos',
 ]
 
 MIDDLEWARE = [
@@ -149,8 +153,11 @@ REST_FRAMEWORK = {
         'api.auth.backends.BearerAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissions',
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ],
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
@@ -169,8 +176,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # API documentation
 # https://drf-spectacular.readthedocs.io/en/latest/
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'My Project API',
-    'DESCRIPTION': 'API documentation',
+    'TITLE': 'Iskra API',
+    'DESCRIPTION': 'Iskra API documentation',
     'VERSION': '1.0.0',
 }
 
@@ -180,4 +187,18 @@ if DEBUG:
     import socket
 
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-    INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1', '10.0.2.2']
+    INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1']
+
+# Celery
+# https://docs.celeryproject.org/en/stable/index.html
+CELERY_BROKER_URL = os.environ.setdefault('CELERY_BROKER_URL', 'redis://redis:6379/0')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'django-db'
+
+# GeoIP
+GEOIP_PATH = 'geoip'
+
+# CORS
+# https://github.com/adamchainz/django-cors-headers
+CORS_ALLOW_ALL_ORIGINS = True

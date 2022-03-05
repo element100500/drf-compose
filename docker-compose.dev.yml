@@ -25,5 +25,49 @@ services:
     depends_on:
       - db
 
+  celery:
+    build: ./server/
+    command: celery -A core worker --loglevel=WARNING --concurrency=10
+    environment:
+      - DB_HOST=db
+      - DJANGO_DEBUG=
+    volumes:
+      - ./server:/app
+    depends_on:
+      - db
+      - redis
+    profiles:
+      - celery
+
+  celery_beat:
+    build: ./server/
+    command: celery -A core beat --loglevel=WARNING --scheduler=django_celery_beat.schedulers:DatabaseScheduler
+    environment:
+      - DB_HOST=db
+      - DJANGO_DEBUG=
+    volumes:
+      - ./server:/app
+    depends_on:
+      - db
+      - redis
+    profiles:
+      - celery
+
+  redis:
+    image: redis:alpine
+  
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./server/static:/var/www/server/static
+      - ./server/media:/var/www/server/media
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    profiles:
+      - nginx
+
 volumes:
   db:

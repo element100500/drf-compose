@@ -7,3 +7,10 @@ djangorestframework
 django-cors-headers
 djoser
 drf_spectacular
+django-filter
+requests
+celery
+redis
+django-celery-results
+django-celery-beat
+geoip2

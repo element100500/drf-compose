@@ -10,4 +10,5 @@ urlpatterns = [
     path('auth/', include('api.auth.urls')),
     path('accounts/', include('accounts.urls')),
     path('location/', include('location.urls')),
+    path('ddos/', include('ddos.urls')),
 ]

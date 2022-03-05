@@ -6,6 +6,5 @@ from . import views
 router = SimpleRouter()
 
 router.register('users', views.UserViewSet)
-# router.register('another', views.AnotherViewSet)
 
 urlpatterns = router.urls
